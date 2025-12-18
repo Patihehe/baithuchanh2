@@ -1,50 +1,51 @@
-import React from "react";
-import { Typography, Paper, Button } from "@mui/material";
-import { useParams, Link } from "react-router-dom"; // Import Link và useParams
-import "./styles.css";
-import models from "../../modelData/models"; // Import models
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { fetchModel } from "../../lib/fetchModelData";
 
-/**
- * Define UserDetail, a React component of Project 4.
- */
-function UserDetail() {
-  const { userId } = useParams(); // Lấy userId từ URL
-  const user = models.userModel(userId); // Lấy thông tin user
+const UserDetail = () => {
+  const { userId } = useParams(); // Sửa từ 'id' thành 'userId' để khớp route
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchModel(`/api/user/${userId}`); // Sử dụng userId
+        setUser(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadUser();
+  }, [userId]); // Dependency là userId
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading user: {error.message}</div>;
+  }
 
   if (!user) {
-    return <Typography>User not found!</Typography>;
+    return <div>User not found</div>;
   }
 
   return (
-    <Paper style={{ padding: "16px" }}>
-      {/* Hiển thị tên */}
-      <Typography variant="h4">
-        {`${user.first_name} ${user.last_name}`}
-      </Typography>
-
-      {/* Hiển thị các thông tin chi tiết */}
-      <Typography variant="body1" style={{ marginTop: "10px" }}>
-        <strong>Location:</strong> {user.location}
-      </Typography>
-      <Typography variant="body1">
-        <strong>Occupation:</strong> {user.occupation}
-      </Typography>
-      <Typography variant="body2" style={{ marginTop: "10px" }}>
-        <strong>Description:</strong> {user.description}
-      </Typography>
-
-      {/* Nút bấm để xem ảnh */}
-      <Button
-        variant="contained"
-        color="primary"
-        component={Link} // Biến Button thành Link
-        to={`/photos/${user._id}`} // Đặt đường dẫn đến trang ảnh
-        style={{ marginTop: "20px" }}
-      >
-        View Photos
-      </Button>
-    </Paper>
+    <div>
+      <h3>
+        {user.first_name} {user.last_name}
+      </h3>
+      <p>Location: {user.location}</p>
+      <p>Description: {user.description}</p>
+      <p>Occupation: {user.occupation}</p>
+    </div>
   );
-}
+};
 
 export default UserDetail;

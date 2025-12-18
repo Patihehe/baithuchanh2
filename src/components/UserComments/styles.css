@@ -1,0 +1,43 @@
+/* components/UserComments/UserComments.css */
+.comments-container {
+  padding: 10px;
+}
+
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.thumbnail {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-text {
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.comment-meta {
+  font-size: 12px;
+  color: gray;
+}
+
+.view-link {
+  color: blue;
+  text-decoration: none;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: gray;
+}

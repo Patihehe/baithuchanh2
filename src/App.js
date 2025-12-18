@@ -1,47 +1,33 @@
-import './App.css';
-
+// App.js
 import React from "react";
-import { Grid, Typography, Paper } from "@mui/material";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import TopBar from "./components/TopBar/index";
+import UserList from "./components/UserList/index";
+import UserDetail from "./components/UserDetail/index";
+import UserPhotos from "./components/UserPhotos/index";
+import UserComments from "./components/UserComments/index";
+import "./App.css"; // Import CSS chung
 
-import TopBar from "./components/TopBar";
-import UserDetail from "./components/UserDetail";
-import UserList from "./components/UserList";
-import UserPhotos from "./components/UserPhotos";
-
-const App = (props) => {
+const App = () => {
   return (
-      <Router>
-        <div>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TopBar />
-            </Grid>
-            <div className="main-topbar-buffer" />
-            <Grid item sm={3}>
-              <Paper className="main-grid-item">
-                <UserList />
-              </Paper>
-            </Grid>
-            <Grid item sm={9}>
-              <Paper className="main-grid-item">
-                <Routes>
-                  <Route
-                      path="/users/:userId"
-                      element = {<UserDetail />}
-                  />
-                  <Route
-                      path="/photos/:userId"
-                      element = {<UserPhotos />}
-                  />
-                  <Route path="/users" element={<UserList />} />
-                </Routes>
-              </Paper>
-            </Grid>
-          </Grid>
+    <Router>
+      <div className="app-container">
+        <TopBar /> {/* Ví dụ: <div className="top-bar">Vũ Bá Thi</div> */}
+        <div className="main-layout">
+          <div className="sidebar">
+            <UserList />
+          </div>
+          <div className="content">
+            <Routes>
+              <Route path="/users/:userId" element={<UserDetail />} />
+              <Route path="/photos/:userId" element={<UserPhotos />} />
+              <Route path="/comments/:userId" element={<UserComments />} />
+            </Routes>
+          </div>
         </div>
-      </Router>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

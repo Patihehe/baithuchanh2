@@ -1,4 +1,9 @@
-.topbar-appBar {
-  height: 60;
-  justify-content: "center";
+/* components/TopBar/TopBar.css */
+/* Di chuyển style từ App.css nếu cần, hoặc để trống nếu dùng chung */
+.top-bar {
+  background-color: #2196f3;
+  color: white;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }

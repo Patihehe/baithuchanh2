@@ -1,89 +1,60 @@
-import React from "react";
-import {
-  Typography,
-  Card,
-  CardMedia,
-  CardContent,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-} from "@mui/material";
-import { useParams, Link } from "react-router-dom"; // Import Link và useParams
-import "./styles.css";
-import models from "../../modelData/models"; // Import models
+// components/UserPhotos/index.jsx
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { fetchModel } from '../../lib/fetchModelData';
+import './styles.css'; // Nếu đã tách CSS
 
-/**
- * Define UserPhotos, a React component of Project 4.
- */
-function UserPhotos() {
-  const { userId } = useParams(); // Lấy userId
-  const photos = models.photoOfUserModel(userId); // Lấy danh sách ảnh
+const UserPhotos = () => {
+  const { userId } = useParams(); // Sửa từ 'id' thành 'userId'
+  const [photos, setPhotos] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Hàm trợ giúp để định dạng ngày giờ
-  const formatDateTime = (dateTimeString) => {
-    return new Date(dateTimeString).toLocaleString();
-  };
+  useEffect(() => {
+    const loadPhotos = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchModel(`/api/photo/photosOfUser/${userId}`); // Sử dụng userId
+        setPhotos(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPhotos();
+  }, [userId]); // Dependency là userId
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading photos: {error.message}</div>;
+  }
 
   return (
-    <div>
-      {/* Lặp qua từng ảnh */}
+    <div className="photos-container">
+      <h3>Photos of User</h3>
       {photos.map((photo) => (
-        <Card key={photo._id} style={{ marginBottom: "20px" }}>
-          {/* Hiển thị ảnh */}
-          <CardMedia
-            component="img"
-            image={`/images/${photo.file_name}`} // Đường dẫn đến ảnh (đã di chuyển vào public)
-            alt="user photo"
-          />
-          <CardContent>
-            {/* Hiển thị ngày đăng ảnh */}
-            <Typography variant="caption" display="block">
-              Posted: {formatDateTime(photo.date_time)}
-            </Typography>
-
-            <Typography variant="h6" style={{ marginTop: "10px" }}>
-              Comments
-            </Typography>
-            {/* Hiển thị danh sách bình luận */}
-            <List>
-              {photo.comments && photo.comments.length > 0 ? (
-                photo.comments.map((comment) => (
-                  <React.Fragment key={comment._id}>
-                    <ListItem alignItems="flex-start">
-                      <ListItemText
-                        // Nội dung bình luận
-                        primary={comment.comment}
-                        // Tên người bình luận (là Link) và ngày bình luận
-                        secondary={
-                          <>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              —{" "}
-                              <Link to={`/users/${comment.user._id}`}>
-                                {`${comment.user.first_name} ${comment.user.last_name}`}
-                              </Link>
-                            </Typography>
-                            {` (${formatDateTime(comment.date_time)})`}
-                          </>
-                        }
-                      />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                  </React.Fragment>
-                ))
-              ) : (
-                <Typography variant="body2">No comments yet.</Typography>
-              )}
-            </List>
-          </CardContent>
-        </Card>
+        <div key={photo._id} id={`photo-${photo._id}`} className="photo-item">
+          <img src={`/images/${photo.file_name}`} alt={photo.file_name} className="photo-img" />
+          <p className="photo-date">Date: {photo.date_time}</p>
+          <h4>Comments:</h4>
+          <ul className="comments-list">
+            {photo.comments.map((comment) => (
+              <li key={comment._id} className="comment">
+                <p>"{comment.comment}"</p>
+                <p>By: {comment.user.first_name} {comment.user.last_name}</p>
+                <p>Date: {comment.date_time}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
     </div>
   );
-}
+};
 
 export default UserPhotos;

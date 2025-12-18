@@ -1,0 +1,29 @@
+/* components/UserPhotos/UserPhotos.css */
+.photos-container {
+  padding: 10px;
+}
+
+.photo-item {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.photo-img {
+  max-width: 100%;
+  height: auto;
+}
+
+.photo-date {
+  font-size: 12px;
+  color: gray;
+}
+
+.comments-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.comment {
+  margin-bottom: 10px;
+}

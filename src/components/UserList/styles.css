@@ -1,0 +1,32 @@
+/* components/UserList/UserList.css */
+.user-list {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.user-link {
+  text-decoration: none;
+  color: black;
+}
+
+.bubble {
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.photo-bubble {
+  background-color: green;
+}
+
+.comment-bubble {
+  background-color: red;
+}

@@ -1,39 +1,42 @@
-import React from "react";
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom"; // Import Link
+// components/UserList/index.jsx
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { fetchModel } from '../../lib/fetchModelData';
 import "./styles.css";
-import models from "../../modelData/models";
 
-function UserList() {
-  const users = models.userListModel();
+const UserList = () => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const data = await fetchModel('/api/user/admin/userlist');
+        setUsers(data);
+      } catch (error) {
+        console.error('Error loading users:', error);
+      }
+    };
+    loadUsers();
+  }, []);
+
   return (
     <div>
-      <Typography variant="h6">Users</Typography> {/* Sửa lại tiêu đề cho rõ ràng */}
-      <List component="nav">
+      <h3>Users</h3>
+      <ul className="user-list">
         {users.map((user) => (
-          // Dùng React.Fragment (hoặc <>) để bọc Link và Divider
-          <React.Fragment key={user._id}>
-            <ListItem
-              component={Link} // Biến ListItem thành Link
-              to={`/users/${user._id}`} // Đặt đường dẫn
-              button // Thêm hiệu ứng khi nhấp
-            >
-              <ListItemText
-                primary={`${user.first_name} ${user.last_name}`} // Hiển thị họ và tên
-              />
-            </ListItem>
-            <Divider />
-          </React.Fragment>
+          <li key={user._id} className="user-item">
+            <Link to={`/users/${user._id}`} className="user-link">
+              {user.first_name} {user.last_name}
+            </Link>
+            <span className="bubble photo-bubble">{user.photo_count}</span>
+            <Link to={`/comments/${user._id}`}>
+              <span className="bubble comment-bubble">{user.comment_count}</span>
+            </Link>
+          </li>
         ))}
-      </List>
+      </ul>
     </div>
   );
-}
+};
 
 export default UserList;

@@ -1,8 +1,29 @@
-.main-topbar-buffer {
-  margin-top: 70px;
+/* styles/App.css */
+.app-container {
+  font-family: Arial, sans-serif;
 }
 
-.main-grid-item {
-  height: calc(100vh - 85px);
+.top-bar {
+  background-color: #2196f3; /* Màu xanh như ảnh */
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.main-layout {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
+
+.content {
+  flex: 1;
   padding: 10px;
 }
