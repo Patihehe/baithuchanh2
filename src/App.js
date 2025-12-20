@@ -1,32 +1,71 @@
-// App.js
+// src/App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, AuthContext } from "./context/AuthContext"; // Thêm
 import TopBar from "./components/TopBar/index";
 import UserList from "./components/UserList/index";
 import UserDetail from "./components/UserDetail/index";
 import UserPhotos from "./components/UserPhotos/index";
 import UserComments from "./components/UserComments/index";
-import "./App.css"; // Import CSS chung
+import LoginRegister from "./components/LoginRegister/index"; // Sẽ tạo
+import "./App.css";
+
+const PrivateRoute = ({ children }) => {
+  const { user, loading } = React.useContext(AuthContext);
+  if (loading) return <div>Loading...</div>;
+  return user ? children : <Navigate to="/login" />;
+};
 
 const App = () => {
   return (
-    <Router>
-      <div className="app-container">
-        <TopBar /> {/* Ví dụ: <div className="top-bar">Vũ Bá Thi</div> */}
-        <div className="main-layout">
-          <div className="sidebar">
-            <UserList />
-          </div>
-          <div className="content">
-            <Routes>
-              <Route path="/users/:userId" element={<UserDetail />} />
-              <Route path="/photos/:userId" element={<UserPhotos />} />
-              <Route path="/comments/:userId" element={<UserComments />} />
-            </Routes>
+    <AuthProvider>
+      <Router>
+        <div className="app-container">
+          <TopBar />
+          <div className="main-layout">
+            <div className="sidebar">
+              <UserList />
+            </div>
+            <div className="content">
+              <Routes>
+                <Route path="/login" element={<LoginRegister />} />
+                <Route
+                  path="/users/:userId"
+                  element={
+                    <PrivateRoute>
+                      <UserDetail />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/photos/:userId"
+                  element={
+                    <PrivateRoute>
+                      <UserPhotos />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/comments/:userId"
+                  element={
+                    <PrivateRoute>
+                      <UserComments />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/login" />} />{" "}
+                {/* Redirect default */}
+              </Routes>
+            </div>
           </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 };
 

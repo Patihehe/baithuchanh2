@@ -1,9 +1,23 @@
-// components/TopBar/index.jsx
-import React from "react";
+// src/components/TopBar/index.jsx
+import React, { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import "./styles.css";
 
 const TopBar = () => {
-  return <div className="top-bar">Vũ Bá Thi</div>; // Placeholder, thay bằng user logged in nếu có
+  const { user, logout } = useContext(AuthContext);
+
+  return (
+    <div className="top-bar">
+      {user ? (
+        <>
+          Hi {user.first_name}
+          <button onClick={logout}>Logout</button>
+        </>
+      ) : (
+        "Please Login"
+      )}
+    </div>
+  );
 };
 
 export default TopBar;

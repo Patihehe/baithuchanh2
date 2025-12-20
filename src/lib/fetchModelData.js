@@ -1,9 +1,14 @@
 // lib/fetchModelData.js
 export const fetchModel = async (url) => {
-  const baseUrl = "https://hhq8qw-8081.csb.app"; // Sử dụng đường dẫn Codesandbox mới
+  const baseUrl = "https://hhq8qw-8081.csb.app";
+  const token = localStorage.getItem("token");
   try {
-    const response = await fetch(`${baseUrl}${url}`);
-    if (response.status === 400) {
+    const response = await fetch(`${baseUrl}${url}`, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
+    if (response.status === 400 || response.status === 401) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Bad Request");
     }

@@ -1,23 +1,29 @@
 // components/UserList/index.jsx
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { fetchModel } from '../../lib/fetchModelData';
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import { fetchModel } from "../../lib/fetchModelData";
+import { AuthContext } from "../../context/AuthContext";
 import "./styles.css";
 
 const UserList = () => {
+  const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    if (!user) {
+      setUsers([]); // Ẩn nếu chưa login
+      return;
+    }
     const loadUsers = async () => {
       try {
-        const data = await fetchModel('/api/user/admin/userlist');
+        const data = await fetchModel("/api/user/admin/userlist");
         setUsers(data);
       } catch (error) {
-        console.error('Error loading users:', error);
+        console.error("Error loading users:", error);
       }
     };
     loadUsers();
-  }, []);
+  }, [user]);
 
   return (
     <div>
@@ -30,7 +36,9 @@ const UserList = () => {
             </Link>
             <span className="bubble photo-bubble">{user.photo_count}</span>
             <Link to={`/comments/${user._id}`}>
-              <span className="bubble comment-bubble">{user.comment_count}</span>
+              <span className="bubble comment-bubble">
+                {user.comment_count}
+              </span>
             </Link>
           </li>
         ))}
