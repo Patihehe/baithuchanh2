@@ -31,17 +31,14 @@ export const AuthProvider = ({ children }) => {
     checkLogin();
   }, []);
 
-  const login = async (login_name) => {
+  const login = async (login_name, password) => { // Thêm password param
     try {
-      const res = await axios.post(
-        "https://hhq8qw-8081.csb.app/api/user/admin/login",
-        { login_name }
-      );
-      localStorage.setItem("token", res.data.token); // Lưu token
+      const res = await axios.post('https://hhq8qw-8081.csb.app/api/user/admin/login', { login_name, password });
+      localStorage.setItem('token', res.data.token);
       setUser(res.data);
       return res.data;
     } catch (err) {
-      throw err.response?.data?.message || "Login failed";
+      throw err.response?.data?.message || 'Login failed';
     }
   };
 
