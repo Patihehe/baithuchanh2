@@ -1,5 +1,6 @@
 // src/App.js
 import React from "react";
+import AddPhoto from "./components/AddPhoto/index";
 import {
   BrowserRouter as Router,
   Routes,
@@ -60,6 +61,14 @@ const App = () => {
                 />
                 <Route path="*" element={<Navigate to="/login" />} />{" "}
                 {/* Redirect default */}
+                <Route
+                  path="/add-photo"
+                  element={
+                    <PrivateRoute>
+                      <AddPhoto />
+                    </PrivateRoute>
+                  }
+                />
               </Routes>
             </div>
           </div>

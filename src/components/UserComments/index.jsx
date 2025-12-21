@@ -40,7 +40,7 @@ const UserComments = () => {
       {comments.map((comment) => (
         <div key={comment.comment_id} className="comment-item">
           <img
-            src={`/images/${comment.file_name}`}
+            src={`https://hhq8qw-8081.csb.app/images/${comment.file_name}`}
             alt="Thumbnail"
             className="thumbnail"
           />

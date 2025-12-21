@@ -1,22 +1,30 @@
 // components/UserPhotos/index.jsx
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { fetchModel } from '../../lib/fetchModelData';
-import './styles.css'; // Nếu đã tách CSS
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
+import { fetchModel } from "../../lib/fetchModelData";
+import { AuthContext } from "../../context/AuthContext"; // Để lấy user
+import axios from "axios"; // Để post comment
+import "./styles.css";
 
 const UserPhotos = () => {
-  const { userId } = useParams(); // Sửa từ 'id' thành 'userId'
+  const { userId } = useParams();
+  const { user } = useContext(AuthContext);
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [newComments, setNewComments] = useState({}); // State cho input comment mỗi photo
 
   useEffect(() => {
     const loadPhotos = async () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchModel(`/api/photo/photosOfUser/${userId}`); // Sử dụng userId
+        const data = await fetchModel(`/api/photo/photosOfUser/${userId}`);
         setPhotos(data);
+        // Init newComments cho mỗi photo
+        const initComments = {};
+        data.forEach((photo) => (initComments[photo._id] = ""));
+        setNewComments(initComments);
       } catch (err) {
         setError(err);
       } finally {
@@ -24,33 +32,89 @@ const UserPhotos = () => {
       }
     };
     loadPhotos();
-  }, [userId]); // Dependency là userId
+  }, [userId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const handleCommentChange = (photoId, value) => {
+    setNewComments((prev) => ({ ...prev, [photoId]: value }));
+  };
 
-  if (error) {
-    return <div>Error loading photos: {error.message}</div>;
-  }
+  const addComment = async (photoId) => {
+    const comment = newComments[photoId].trim();
+    if (!comment) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        `https://hhq8qw-8081.csb.app/api/photo/commentsOfPhoto/${photoId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ comment }),
+        }
+      );
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message);
+      }
+
+      const newComment = await response.json();
+
+      setPhotos((prev) =>
+        prev.map((photo) =>
+          photo._id === photoId
+            ? { ...photo, comments: [...photo.comments, newComment] }
+            : photo
+        )
+      );
+
+      setNewComments((prev) => ({ ...prev, [photoId]: "" }));
+    } catch (err) {
+      console.error("Error adding comment:", err.message);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error loading photos: {error.message}</div>;
 
   return (
     <div className="photos-container">
       <h3>Photos of User</h3>
       {photos.map((photo) => (
         <div key={photo._id} id={`photo-${photo._id}`} className="photo-item">
-          <img src={`/images/${photo.file_name}`} alt={photo.file_name} className="photo-img" />
+          <img
+            src={`https://hhq8qw-8081.csb.app/images/${photo.file_name}`}
+            alt={photo.file_name}
+            className="photo-img"
+          />
           <p className="photo-date">Date: {photo.date_time}</p>
           <h4>Comments:</h4>
           <ul className="comments-list">
             {photo.comments.map((comment) => (
               <li key={comment._id} className="comment">
                 <p>"{comment.comment}"</p>
-                <p>By: {comment.user.first_name} {comment.user.last_name}</p>
+                <p>
+                  By: {comment.user.first_name} {comment.user.last_name}
+                </p>
                 <p>Date: {comment.date_time}</p>
               </li>
             ))}
           </ul>
+          {user && ( // Chỉ hiển thị form nếu logged in
+            <div className="add-comment">
+              <input
+                type="text"
+                placeholder="Add a comment..."
+                value={newComments[photo._id]}
+                onChange={(e) => handleCommentChange(photo._id, e.target.value)}
+              />
+              <button onClick={() => addComment(photo._id)}>Add Comment</button>
+            </div>
+          )}
         </div>
       ))}
     </div>
