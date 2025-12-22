@@ -1,0 +1,8 @@
+.photo-detail-container {
+    padding: 10px;
+  }
+  
+  .photo-img {
+    max-width: 100%;
+    height: auto;
+  }

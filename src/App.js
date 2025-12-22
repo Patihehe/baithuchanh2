@@ -14,6 +14,7 @@ import UserDetail from "./components/UserDetail/index";
 import UserPhotos from "./components/UserPhotos/index";
 import UserComments from "./components/UserComments/index";
 import LoginRegister from "./components/LoginRegister/index"; // Sẽ tạo
+import PhotoDetail from './components/PhotoDetail/index';
 import "./App.css";
 
 const PrivateRoute = ({ children }) => {
@@ -69,6 +70,7 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
+                <Route path="/photo/:photoId" element={<PrivateRoute><PhotoDetail /></PrivateRoute>} />
               </Routes>
             </div>
           </div>

@@ -7,10 +7,10 @@ import axios from "axios";
 
 const LoginRegister = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [loginName, setLoginName] = useState('');
-  const [password, setPassword] = useState(''); // Thêm
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [loginName, setLoginName] = useState("");
+  const [password, setPassword] = useState(""); // Thêm
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -26,36 +26,63 @@ const LoginRegister = () => {
         navigate(`/users/${userData._id}`);
       } else {
         // Register với password
-        const res = await axios.post('https://hhq8qw-8081.csb.app/api/user/admin/register', {
-          login_name: loginName,
-          password,
-          first_name: firstName,
-          last_name: lastName
-        });
-        localStorage.setItem('token', res.data.token);
+        const res = await axios.post(
+          "https://hhq8qw-8081.csb.app/api/user/admin/register",
+          {
+            login_name: loginName,
+            password,
+            first_name: firstName,
+            last_name: lastName,
+          }
+        );
+        localStorage.setItem("token", res.data.token);
         navigate(`/users/${res.data._id}`);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Operation failed');
+      setError(err.response?.data?.message || "Operation failed");
     }
   };
 
   return (
     <div className="login-container">
-      <h3>{isLogin ? 'Please Login' : 'Register New User'}</h3>
+      <h3>{isLogin ? "Please Login" : "Register New User"}</h3>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Login Name" value={loginName} onChange={(e) => setLoginName(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required /> {/* Thêm */}
+        <input
+          type="text"
+          placeholder="Login Name"
+          value={loginName}
+          onChange={(e) => setLoginName(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         {!isLogin && (
           <>
-            <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-            <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
           </>
         )}
-        <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+        <button type="submit">{isLogin ? "Login" : "Register"}</button>
       </form>
       <button onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? 'Switch to Register' : 'Switch to Login'}
+        {isLogin ? "Switch to Register" : "Switch to Login"}
       </button>
       {error && <p className="error">{error}</p>}
     </div>

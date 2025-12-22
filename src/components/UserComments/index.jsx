@@ -48,12 +48,7 @@ const UserComments = () => {
             <p className="comment-text">"{comment.comment_text}"</p>
             <p className="comment-meta">
               On photo:{" "}
-              <Link
-                to={`/photos/${comment.user_id}#photo-${comment.photo_id}`}
-                className="view-link"
-              >
-                View Photo
-              </Link>
+              <Link to={`/photo/${comment.photo_id}`} className="view-link">View Photo</Link>
             </p>
             <p className="comment-date">{comment.date_time}</p>
           </div>
