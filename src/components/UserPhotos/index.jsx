@@ -13,6 +13,7 @@ const UserPhotos = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [newComments, setNewComments] = useState({}); // State cho input comment mỗi photo
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     const loadPhotos = async () => {
@@ -20,7 +21,9 @@ const UserPhotos = () => {
         setLoading(true);
         setError(null);
         const data = await fetchModel(`/api/photo/photosOfUser/${userId}`);
+        const user_if = await fetchModel(`/api/user/${userId}`);
         setPhotos(data);
+        setUserInfo(user_if);
         // Init newComments cho mỗi photo
         const initComments = {};
         data.forEach((photo) => (initComments[photo._id] = ""));
@@ -83,7 +86,9 @@ const UserPhotos = () => {
 
   return (
     <div className="photos-container">
-      <h3>Photos of User</h3>
+      <h3>
+        Photos of {userInfo.first_name} {userInfo.last_name}
+      </h3>
       {photos.map((photo) => (
         <div key={photo._id} id={`photo-${photo._id}`} className="photo-item">
           <img
