@@ -11,6 +11,9 @@ const LoginRegister = () => {
   const [password, setPassword] = useState(""); // Thêm
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+  const [occupation, setOccupation] = useState("");
   const [error, setError] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -33,6 +36,9 @@ const LoginRegister = () => {
             password,
             first_name: firstName,
             last_name: lastName,
+            location,
+            description,
+            occupation,
           }
         );
         localStorage.setItem("token", res.data.token);
@@ -75,6 +81,27 @@ const LoginRegister = () => {
               placeholder="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Occupation"
+              value={occupation}
+              onChange={(e) => setOccupation(e.target.value)}
               required
             />
           </>
