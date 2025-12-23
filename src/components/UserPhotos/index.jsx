@@ -1,9 +1,8 @@
 // components/UserPhotos/index.jsx
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { fetchModel } from "../../lib/fetchModelData";
 import { AuthContext } from "../../context/AuthContext"; // Để lấy user
-import axios from "axios"; // Để post comment
 import "./styles.css";
 
 const UserPhotos = () => {
@@ -103,9 +102,12 @@ const UserPhotos = () => {
             {photo.comments.map((comment) => (
               <li key={comment._id} className="comment">
                 <p>"{comment.comment}"</p>
-                <p>
-                  By: {comment.user.first_name} {comment.user.last_name}
-                </p>
+                <span>
+                  By:{" "}
+                  <Link to={`/users/${comment.user._id}`}>
+                    {comment.user.first_name} {comment.user.last_name}
+                  </Link>
+                </span>
                 <p>Date: {comment.date_time}</p>
               </li>
             ))}

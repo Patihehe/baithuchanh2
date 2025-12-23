@@ -3,8 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchModel } from "../../lib/fetchModelData";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
-import "./PhotoDetail.css"; // Tạo CSS nếu cần (tương tự UserPhotos.css)
+import "./PhotoDetail.css";
 
 const PhotoDetail = () => {
   const { photoId } = useParams(); // Lấy photoId từ URL
