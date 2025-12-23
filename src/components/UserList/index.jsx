@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import "./styles.css";
 
 const UserList = () => {
-  const { user } = useContext(AuthContext);
+  const { user, refreshUserList } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const UserList = () => {
       }
     };
     loadUsers();
-  }, [user]);
+  }, [user, refreshUserList]);
 
   return (
     <div>
@@ -35,9 +35,9 @@ const UserList = () => {
               {user.first_name} {user.last_name}
             </Link>
             <Link to={`/photos/${user._id}`}>
-            <span className="bubble photo-bubble">{user.photo_count}</span>
+              <span className="bubble photo-bubble">{user.photo_count}</span>
             </Link>
-            
+
             <Link to={`/comments/${user._id}`}>
               <span className="bubble comment-bubble">
                 {user.comment_count}

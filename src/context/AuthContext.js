@@ -7,6 +7,11 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshUserList, setRefreshUserList] = useState(0);
+
+  const triggerUserListRefresh = () => {
+    setRefreshUserList((prev) => prev + 1);
+  };
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -31,14 +36,18 @@ export const AuthProvider = ({ children }) => {
     checkLogin();
   }, []);
 
-  const login = async (login_name, password) => { // Thêm password param
+  const login = async (login_name, password) => {
+    // Thêm password param
     try {
-      const res = await axios.post('https://hhq8qw-8081.csb.app/api/user/admin/login', { login_name, password });
-      localStorage.setItem('token', res.data.token);
+      const res = await axios.post(
+        "https://hhq8qw-8081.csb.app/api/user/admin/login",
+        { login_name, password }
+      );
+      localStorage.setItem("token", res.data.token);
       setUser(res.data);
       return res.data;
     } catch (err) {
-      throw err.response?.data?.message || 'Login failed';
+      throw err.response?.data?.message || "Login failed";
     }
   };
 
@@ -48,7 +57,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        logout,
+        refreshUserList,
+        triggerUserListRefresh,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

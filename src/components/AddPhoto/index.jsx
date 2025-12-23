@@ -8,7 +8,8 @@ import "./AddPhoto.css"; // Tạo nếu cần
 const AddPhoto = () => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
-  const { user } = useContext(AuthContext);
+  const { user, triggerUserListRefresh } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -36,6 +37,7 @@ const AddPhoto = () => {
           },
         }
       );
+      triggerUserListRefresh();
       navigate(`/photos/${user._id}`); // Redirect đến photos của user
     } catch (err) {
       setError(err.response?.data?.message || "Upload failed");

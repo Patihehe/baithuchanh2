@@ -14,6 +14,7 @@ const UserPhotos = () => {
   const [loading, setLoading] = useState(true);
   const [newComments, setNewComments] = useState({}); // State cho input comment mỗi photo
   const [userInfo, setUserInfo] = useState(null);
+  const { triggerUserListRefresh } = useContext(AuthContext);
 
   useEffect(() => {
     const loadPhotos = async () => {
@@ -74,7 +75,7 @@ const UserPhotos = () => {
             : photo
         )
       );
-
+      triggerUserListRefresh();
       setNewComments((prev) => ({ ...prev, [photoId]: "" }));
     } catch (err) {
       console.error("Error adding comment:", err.message);
