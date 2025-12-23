@@ -14,6 +14,7 @@ const LoginRegister = () => {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [occupation, setOccupation] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -21,7 +22,10 @@ const LoginRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
     try {
       if (isLogin) {
         // Login với password
@@ -67,8 +71,16 @@ const LoginRegister = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
         {!isLogin && (
           <>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
             <input
               type="text"
               placeholder="First Name"
