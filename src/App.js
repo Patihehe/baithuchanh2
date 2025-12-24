@@ -14,7 +14,7 @@ import UserDetail from "./components/UserDetail/index";
 import UserPhotos from "./components/UserPhotos/index";
 import UserComments from "./components/UserComments/index";
 import LoginRegister from "./components/LoginRegister/index"; // Sẽ tạo
-import PhotoDetail from './components/PhotoDetail/index';
+import PhotoDetail from "./components/PhotoDetail/index";
 import "./App.css";
 
 const PrivateRoute = ({ children }) => {
@@ -60,8 +60,6 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route path="*" element={<Navigate to="/login" />} />{" "}
-                {/* Redirect default */}
                 <Route
                   path="/add-photo"
                   element={
@@ -70,7 +68,15 @@ const App = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route path="/photo/:photoId" element={<PrivateRoute><PhotoDetail /></PrivateRoute>} />
+                <Route
+                  path="/photo/:photoId"
+                  element={
+                    <PrivateRoute>
+                      <PhotoDetail />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path="*" element={<Navigate to="/login" />} />
               </Routes>
             </div>
           </div>

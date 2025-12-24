@@ -1,8 +1,7 @@
-// components/UserPhotos/index.jsx
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchModel } from "../../lib/fetchModelData";
-import { AuthContext } from "../../context/AuthContext"; // Để lấy user
+import { AuthContext } from "../../context/AuthContext";
 import "./styles.css";
 
 const UserPhotos = () => {
@@ -24,7 +23,6 @@ const UserPhotos = () => {
         const user_if = await fetchModel(`/api/user/${userId}`);
         setPhotos(data);
         setUserInfo(user_if);
-        // Init newComments cho mỗi photo
         const initComments = {};
         data.forEach((photo) => (initComments[photo._id] = ""));
         setNewComments(initComments);

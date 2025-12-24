@@ -1,14 +1,13 @@
-// src/components/LoginRegister/index.jsx
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import "./LoginRegister.css"; // Tạo CSS nếu cần
+import "./LoginRegister.css";
 import axios from "axios";
 
 const LoginRegister = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loginName, setLoginName] = useState("");
-  const [password, setPassword] = useState(""); // Thêm
+  const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [location, setLocation] = useState("");
@@ -28,11 +27,9 @@ const LoginRegister = () => {
     }
     try {
       if (isLogin) {
-        // Login với password
         const userData = await login(loginName, password);
         navigate(`/users/${userData._id}`);
       } else {
-        // Register với password
         const res = await axios.post(
           "https://hhq8qw-8081.csb.app/api/user/admin/register",
           {
