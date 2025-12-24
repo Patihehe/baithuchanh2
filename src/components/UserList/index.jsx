@@ -11,7 +11,7 @@ const UserList = () => {
 
   useEffect(() => {
     if (!user) {
-      setUsers([]); // Ẩn nếu chưa login
+      setUsers([]); 
       return;
     }
     const loadUsers = async () => {

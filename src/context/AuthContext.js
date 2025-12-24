@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
       try {
-        const res = await axios.get("https://hhq8qw-8081.csb.app/api/user/me", {
+        const res = await axios.get("https://ypvdmq-8081.csb.app/api/user/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     // Thêm password param
     try {
       const res = await axios.post(
-        "https://hhq8qw-8081.csb.app/api/user/admin/login",
+        "https://ypvdmq-8081.csb.app/api/user/admin/login",
         { login_name, password }
       );
       localStorage.setItem("token", res.data.token);

@@ -40,7 +40,7 @@ const UserComments = () => {
       {comments.map((comment) => (
         <div key={comment.comment_id} className="comment-item">
           <img
-            src={`https://hhq8qw-8081.csb.app/images/${comment.file_name}`}
+            src={`https://ypvdmq-8081.csb.app/images/${comment.file_name}`}
             alt="Thumbnail"
             className="thumbnail"
           />
@@ -48,7 +48,9 @@ const UserComments = () => {
             <p className="comment-text">"{comment.comment_text}"</p>
             <p className="comment-meta">
               On photo:{" "}
-              <Link to={`/photo/${comment.photo_id}`} className="view-link">View Photo</Link>
+              <Link to={`/photo/${comment.photo_id}`} className="view-link">
+                View Photo
+              </Link>
             </p>
             <p className="comment-date">{comment.date_time}</p>
           </div>

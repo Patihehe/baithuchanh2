@@ -36,7 +36,7 @@ const PhotoDetail = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://hhq8qw-8081.csb.app/api/photo/commentsOfPhoto/${photoId}`,
+        `https://ypvdmq-8081.csb.app/api/photo/commentsOfPhoto/${photoId}`,
         {
           method: "POST",
           headers: {
@@ -68,7 +68,7 @@ const PhotoDetail = () => {
     <div className="photo-detail-container">
       <h3>Photo Detail</h3>
       <img
-        src={`https://hhq8qw-8081.csb.app/images/${photo.file_name}`}
+        src={`https://ypvdmq-8081.csb.app/images/${photo.file_name}`}
         alt={photo.file_name}
         className="photo-img"
       />

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { fetchModel } from "../../lib/fetchModelData";
 
 const UserDetail = () => {
-  const { userId } = useParams(); // Sửa từ 'id' thành 'userId' để khớp route
+  const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ const UserDetail = () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchModel(`/api/user/${userId}`); // Sử dụng userId
+        const data = await fetchModel(`/api/user/${userId}`);
         setUser(data);
       } catch (err) {
         setError(err);
@@ -22,7 +22,7 @@ const UserDetail = () => {
       }
     };
     loadUser();
-  }, [userId]); // Dependency là userId
+  }, [userId]);
 
   if (loading) {
     return <div>Loading...</div>;

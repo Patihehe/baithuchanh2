@@ -1,6 +1,6 @@
 // lib/fetchModelData.js
 export const fetchModel = async (url) => {
-  const baseUrl = "https://hhq8qw-8081.csb.app";
+  const baseUrl = "https://ypvdmq-8081.csb.app";
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${baseUrl}${url}`, {

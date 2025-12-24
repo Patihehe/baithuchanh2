@@ -28,7 +28,7 @@ const AddPhoto = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "https://hhq8qw-8081.csb.app/api/photo/photos/new",
+        "https://ypvdmq-8081.csb.app/api/photo/photos/new",
         formData,
         {
           headers: {

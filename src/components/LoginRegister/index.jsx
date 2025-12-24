@@ -31,7 +31,7 @@ const LoginRegister = () => {
         navigate(`/users/${userData._id}`);
       } else {
         const res = await axios.post(
-          "https://hhq8qw-8081.csb.app/api/user/admin/register",
+          "https://ypvdmq-8081.csb.app/api/user/admin/register",
           {
             login_name: loginName,
             password,
